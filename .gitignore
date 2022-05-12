@@ -1,3 +1,9 @@
 vars.env
 .env
 .vscode
+
+.mypy_cache
+.pytest_cache
+helpers/__pycache__
+helpers/tests/__pycache__
+__pycache__

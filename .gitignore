@@ -7,3 +7,6 @@ vars.env
 helpers/__pycache__
 helpers/tests/__pycache__
 __pycache__
+data_for_powerBI.csv
+fixed_cats.csv
+missing_cats.csv

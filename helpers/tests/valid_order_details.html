@@ -1,0 +1,630 @@
+<style>
+    .pagination {
+        display: inline-block;
+        margin: 0;
+    }
+
+    .pagination-summary {
+        display: inline-block;
+        padding: 5px 10px;
+        vertical-align: top;
+        color: #999999;
+    }
+
+    .content #order-details-section [class*="span"] {
+        min-height: 0px;
+    }
+
+    @media print,
+    @media (max-width: 767px) {
+
+        .content #order-details-section [class*="span"],
+        .uneditable-input[class*="span"],
+        .row-fluid [class*="span"] {
+            display: block;
+            float: left;
+            min-height: 0px;
+            margin-left: 2.127659574468085%;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .content .row-fluid .span1 {
+            width: 6.382978723404255%;
+        }
+
+        .content .row-fluid .span2 {
+            width: 14.893617021276595%;
+        }
+
+        .content .row-fluid .span3 {
+            width: 23.404255319148934%;
+        }
+
+        .content .row-fluid .span4 {
+            width: 31.914893617021278%;
+        }
+
+        .content .row-fluid .span5 {
+            width: 40.42553191489362%;
+        }
+
+        .content .row-fluid .span6 {
+            width: 48.93617021276595%;
+        }
+
+        .content .row-fluid .span7 {
+            width: 57.44680851063829%;
+        }
+
+        .content .row-fluid .offset1 {
+            margin-left: 10.638297872340425%;
+        }
+    }
+
+    @media (max-width: 599px) {
+
+        .content [class*="span"],
+        .uneditable-input[class*="span"],
+        .row-fluid [class*="span"] {
+            display: block;
+            float: none;
+            width: 100%;
+            margin-left: 0;
+        }
+    }
+
+    @media screen {
+        .page-break {
+            height: 20px;
+        }
+
+        .order-border {
+            border: 1px solid;
+            border-color: #ddd;
+            border-radius: 5px;
+            padding: 10px 10px 0;
+        }
+    }
+
+    @media print {
+        .page-break {
+            height: 0;
+            page-break-before: always;
+            margin: 0;
+            border-top: none;
+        }
+
+        .order-border {
+            border: none;
+            padding: 0;
+        }
+    }
+</style>
+<div class="page-break"></div>
+<div class="clearfix">
+    <h4 class="pull-left">Order Details</h4>
+    <div class="pull-right print-hide" style="padding-top:15px;">
+        <span class="pagination-summary">Showing 1 through 20 of 43</span>
+
+        <span>
+            <div class="pagination">
+                <ul>
+                    <li class="prev disabled"><a href="#">�&nbsp;Previous</a></li>
+                    <li class="active"><a href="/restaurants/admin/reports/orderdetailspage?page=1">1</a></li>
+                    <li class=""><a href="/restaurants/admin/reports/orderdetailspage?page=2">2</a></li>
+                    <li class=""><a href="/restaurants/admin/reports/orderdetailspage?page=3">3</a></li>
+                    <li class="next "><a href="/restaurants/admin/reports/orderdetailspage?page=2">Next&nbsp;�</a></li>
+                </ul>
+            </div>
+        </span>
+    </div>
+</div>
+<!-- Header junk -->
+
+<!-- TEST CASES START HERE -->
+
+<div class="print-only" style="text-align:right;padding:5px;">Order 1 of 43</div>
+<!-- TEST CASE for commas in item quantity e.g. 2,000 -->
+<div class="order-border" id="order-number-12">
+    <h4 id="order-summary-header">Order #12 <span>(Open)</span>
+        <div class="print-hide order-detail-meta-id">ID: 500000017401140395</div>
+    </h4>
+
+    <style>
+        #order-summary .summary-label {
+            padding-top: 4px;
+        }
+
+        #order-summary .summary-label-last {
+            margin-left: 0;
+        }
+
+        #order-summary .summary-value {
+            margin-bottom: 0;
+        }
+
+        #order-summary .summary-value-padded {
+            padding: 4px 6px;
+        }
+
+        #item-table-wrapper th {
+            white-space: nowrap;
+        }
+
+        #item-table-wrapper .table-striped>thead>tr>th,
+        #item-table-wrapper .table-striped>tbody>tr:nth-child(2n)>td {
+            background: #fff;
+        }
+
+        .fixed-col {
+            position: sticky;
+            left: 0;
+            z-index: 1;
+        }
+
+        .fixed-col.active {
+            box-shadow: 3px 0px 4px 0px #eee;
+        }
+
+        .order-detail-meta-id {
+            font-size: 10px;
+            color: #aaa;
+            font-weight: normal;
+        }
+
+        .order-detail-meta-link {
+            font-size: 11px;
+            font-weight: normal
+        }
+
+        .order-detail-created-by {
+            color: #333;
+        }
+    </style>
+    <div id="order-summary">
+        <div class="span1 summary-label">
+            <b>Guests:</b><br>
+        </div>
+        <div class="span2 input-append summary-value">
+            <input class="span2 no-edit" id="num-guests" type="text" value="1"
+                data-url="/restaurants/admin/changeguestnumber?id=500000017401140395" disabled="">
+        </div>
+        <div class="span1 summary-label">
+            <b>Checks:</b>
+        </div>
+        <div class="span2 summary-value summary-value-padded">
+            1 </div>
+        <div class="span3 summary-label summary-label-last">
+            <b>Revenue Center:</b>
+        </div>
+        <div id="revenue-center-controls" class="span3 summary-value">
+            <div id="revenue-center-name">Store Front</div>
+
+            <span id="revenue-center-select" class="controls hidden"
+                data-url="/restaurants/admin/changerevenuecenter?orderId=500000017401140395">
+                <select id="revenue-center">
+                    <option value="-1">None</option>
+                    <option value="500000003204260663" selected="selected">Store Front</option>
+                    <option value="500000003204260665">Wholesale</option>
+                </select>
+                null
+            </span>
+
+        </div>
+    </div>
+    <div>
+        <div class="span1 summary-label">
+            <b>Source:</b>
+        </div>
+        <div class="span2 summary-value summary-value-padded">
+            In Store
+        </div>
+    </div>
+    <div style="clear:both;"></div>
+    <hr>
+
+
+    <h4>
+        Check #12
+        <span>
+            (Open) </span>
+        <form id="reopenCheckForm" style="display:none;" action="/restaurants/admin/reopencheck?id=500000017401140391"
+            method="POST">
+            <input type="hidden" name="authenticityToken" value="de3c61b678caee9963f456e54abbd5f8f10ce067">
+        </form>
+
+        <img src="https://cdn.toasttab.com/release-271-3/images/ajax-loader-small.gif" style="display:none">
+        <div class="print-hide order-detail-meta-id">ID: 500000017401140391</div>
+    </h4>
+
+    <div class="row-fluid">
+        <div class="span1">
+            <b style="white-space: nowrap">Time Opened:</b><br>
+            <b>Server:</b><br>
+            <b style="white-space: nowrap">Opened by Server:</b><br>
+        </div>
+        <div class="span4 check-server-details" style="text-align: right;">
+            5/20/22, 6:28 AM<br>
+            Megan Edgecomb<br>
+            Megan Edgecomb<br>
+        </div>
+
+        <div class="span2">
+            <b>Discounts:</b><br>
+            <b>Credits:</b><br>
+            <b>Subtotal:</b><br>
+            <b>Tax:</b>
+        </div>
+
+
+        <div class="span1" style="text-align: right;">
+            <span class="check-discounts">$0.00</span><br>
+            <span class="check-credits">$0.00</span><br>
+            <span class="check-subtotal">$29.60</span><br>
+            <span class="check-tax">$0.30</span>
+        </div>
+        <div class="span2 offset1">
+            <b>TOTAL:</b><br>
+            <b>Balance Due:</b><br>
+            <b>Tip:</b>
+        </div>
+        <div class="span1" style="text-align: right;">
+            $29.90<br>
+            $29.90<br>
+            $0.00<br>
+        </div>
+
+    </div>
+
+
+    <br>
+    <div class="row-fluid">
+        <div class="span5">
+
+            <b>Phone Order:</b><br>
+            309-828-7004<br> Bloomington Winsupply
+            (<a href="#" class="view-customer-info" data-customer-id="500000007538158515">detail</a>)
+            <br>
+        </div>
+        <div class="span3">
+        </div>
+        <div class="span4">
+        </div>
+        <div class="span3">
+            <b>Expected Time: </b><br>
+            5/20/2022, 6:30 AM<br>
+        </div>
+    </div>
+
+    <h5>Items</h5>
+    <div id="item-table-wrapper" style="overflow-x: scroll">
+        <table class="table table-bordered table-striped order-details-table" id="order-details-item-table">
+            <thead>
+                <tr>
+                    <th class="fixed-col">Menu Item</th>
+                    <th>Modifiers</th>
+                    <th style="text-align: right;">Price</th>
+                    <th style="text-align: right;">Qty</th>
+                    <th style="text-align: right;">Discount</th>
+                    <th style="text-align: right;">Net</th>
+                    <th style="text-align: right;">Tax</th>
+                    <th style="text-align: right;">Total</th>
+                    <th style="text-align: right;">Voided?</th>
+                    <th style="text-align: right;">Reason</th>
+                    <th style="text-align: right;">Refund Qty</th>
+                    <th style="text-align: right;">Refund</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="fixed-col">
+                        Assorted Dozen Donuts
+                    </td>
+                    <td></td>
+                    <td style="text-align: right;">$14.80</td>
+                    <td style="text-align: right;">2,000</td>
+                    <td style="text-align: right;">$0.00</td>
+                    <td style="text-align: right;">$29.60</td>
+                    <td style="text-align: right;">$0.300</td>
+                    <td style="text-align: right;">$29.90</td>
+                    <td style="text-align: right;">false</td>
+                    <td style="text-align: right;"></td>
+                    <td style="text-align: right;">0 </td>
+                    <td style="text-align: right;">$0.00</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+
+
+</div>
+<div class="page-break"></div>
+<div class="print-only" style="text-align:right;padding:5px;">Order 2 of 43</div>
+<div class="order-border" id="order-number-127">
+    <h4 id="order-summary-header">Order #127 <span>(Paid)</span>
+        <div class="print-hide order-detail-meta-id">ID: 500000017246863800</div>
+    </h4>
+
+    <style>
+        #order-summary .summary-label {
+            padding-top: 4px;
+        }
+
+        #order-summary .summary-label-last {
+            margin-left: 0;
+        }
+
+        #order-summary .summary-value {
+            margin-bottom: 0;
+        }
+
+        #order-summary .summary-value-padded {
+            padding: 4px 6px;
+        }
+
+        #item-table-wrapper th {
+            white-space: nowrap;
+        }
+
+        #item-table-wrapper .table-striped>thead>tr>th,
+        #item-table-wrapper .table-striped>tbody>tr:nth-child(2n)>td {
+            background: #fff;
+        }
+
+        .fixed-col {
+            position: sticky;
+            left: 0;
+            z-index: 1;
+        }
+
+        .fixed-col.active {
+            box-shadow: 3px 0px 4px 0px #eee;
+        }
+
+        .order-detail-meta-id {
+            font-size: 10px;
+            color: #aaa;
+            font-weight: normal;
+        }
+
+        .order-detail-meta-link {
+            font-size: 11px;
+            font-weight: normal
+        }
+
+        .order-detail-created-by {
+            color: #333;
+        }
+    </style>
+    <div id="order-summary">
+        <div class="span1 summary-label">
+            <b>Guests:</b><br>
+        </div>
+        <div class="span2 input-append summary-value">
+            <input class="span2 no-edit" id="num-guests" type="text" value="1"
+                data-url="/restaurants/admin/changeguestnumber?id=500000017246863800" disabled="">
+        </div>
+        <div class="span1 summary-label">
+            <b>Checks:</b>
+        </div>
+        <div class="span2 summary-value summary-value-padded">
+            1 </div>
+        <div class="span3 summary-label summary-label-last">
+            <b>Revenue Center:</b>
+        </div>
+        <div id="revenue-center-controls" class="span3 summary-value">
+            <div id="revenue-center-name">Store Front</div>
+
+            <span id="revenue-center-select" class="controls hidden"
+                data-url="/restaurants/admin/changerevenuecenter?orderId=500000017246863800">
+                <select id="revenue-center">
+                    <option value="-1">None</option>
+                    <option value="500000003204260663" selected="selected">Store Front</option>
+                    <option value="500000003204260665">Wholesale</option>
+                </select>
+                null
+            </span>
+
+        </div>
+    </div>
+    <div>
+        <div class="span1 summary-label">
+            <b>Source:</b>
+        </div>
+        <div class="span2 summary-value summary-value-padded">
+            In Store
+        </div>
+    </div>
+    <div style="clear:both;"></div>
+    <hr>
+
+
+    <h4>
+        Check #127
+        <span>
+            (Paid) </span>
+        <form id="reopenCheckForm" style="display:none;" action="/restaurants/admin/reopencheck?id=500000017246862948"
+            method="POST">
+            <input type="hidden" name="authenticityToken" value="de3c61b678caee9963f456e54abbd5f8f10ce067">
+        </form>
+
+        <img src="https://cdn.toasttab.com/release-271-3/images/ajax-loader-small.gif" style="display:none">
+        <div class="print-hide order-detail-meta-id">ID: 500000017246862948</div>
+    </h4>
+
+    <div class="row-fluid">
+        <div class="span1">
+            <b style="white-space: nowrap">Time Opened:</b><br>
+            <b>Server:</b><br>
+            <b style="white-space: nowrap">Opened by Server:</b><br>
+        </div>
+        <div class="span4 check-server-details" style="text-align: right;">
+            5/20/22, 6:28 AM<br>
+            Katie Reeder<br>
+            Katie Reeder<br>
+        </div>
+
+        <div class="span2">
+            <b>Discounts:</b><br>
+            <b>Credits:</b><br>
+            <b>Subtotal:</b><br>
+            <b>Tax:</b>
+        </div>
+
+
+        <div class="span1" style="text-align: right;">
+            <span class="check-discounts">$0.00</span><br>
+            <span class="check-credits">$0.00</span><br>
+            <span class="check-subtotal">$46.80</span><br>
+            <span class="check-tax">$0.46</span>
+        </div>
+        <div class="span2 offset1">
+            <b>TOTAL:</b><br>
+            <b>Balance Due:</b><br>
+            <b>Tip:</b>
+        </div>
+        <div class="span1" style="text-align: right;">
+            $47.26<br>
+            $0.00<br>
+            $0.00<br>
+        </div>
+
+    </div>
+
+
+    <br>
+    <div class="row-fluid">
+        <div class="span5">
+
+            <b>Phone Order:</b><br>
+            219-863-8636<br> JoAnn Hays
+            (<a href="#" class="view-customer-info" data-customer-id="500000017221265278">detail</a>)
+            <br>
+        </div>
+        <div class="span3">
+        </div>
+        <div class="span4">
+        </div>
+        <div class="span3">
+            <b>Expected Time: </b><br>
+            5/20/2022, 6:30 AM<br>
+        </div>
+    </div>
+
+    <h5>Items</h5>
+    <div id="item-table-wrapper" style="overflow-x: scroll">
+        <table class="table table-bordered table-striped order-details-table" id="order-details-item-table">
+            <thead>
+                <tr>
+                    <th class="fixed-col">Menu Item</th>
+                    <th>Modifiers</th>
+                    <th style="text-align: right;">Price</th>
+                    <th style="text-align: right;">Qty</th>
+                    <th style="text-align: right;">Discount</th>
+                    <th style="text-align: right;">Net</th>
+                    <th style="text-align: right;">Tax</th>
+                    <th style="text-align: right;">Total</th>
+                    <th style="text-align: right;">Voided?</th>
+                    <th style="text-align: right;">Reason</th>
+                    <th style="text-align: right;">Refund Qty</th>
+                    <th style="text-align: right;">Refund</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="fixed-col">
+                        Round Iced
+                    </td>
+                    <td>Blue Background</td>
+                    <td style="text-align: right;">$1.30</td>
+                    <td style="text-align: right;">18</td>
+                    <td style="text-align: right;">$0.00</td>
+                    <td style="text-align: right;">$23.40</td>
+                    <td style="text-align: right;">$0.230</td>
+                    <td style="text-align: right;">$23.63</td>
+                    <td style="text-align: right;">false</td>
+                    <td style="text-align: right;"></td>
+                    <td style="text-align: right;">0 </td>
+                    <td style="text-align: right;">$0.00</td>
+                </tr>
+                <tr>
+                    <td class="fixed-col">
+                        Round Iced
+                    </td>
+                    <td>Yellow Background</td>
+                    <td style="text-align: right;">$1.30</td>
+                    <td style="text-align: right;">18</td>
+                    <td style="text-align: right;">$0.00</td>
+                    <td style="text-align: right;">$23.40</td>
+                    <td style="text-align: right;">$0.230</td>
+                    <td style="text-align: right;">$23.63</td>
+                    <td style="text-align: right;">false</td>
+                    <td style="text-align: right;"></td>
+                    <td style="text-align: right;">0 </td>
+                    <td style="text-align: right;">$0.00</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+
+    <h5>Payments</h5>
+    <table class="table table-bordered table-striped order-details-table" id="order-details-payments-table">
+        <thead>
+            <tr>
+                <th style="">Payment</th>
+                <th style="">Date</th>
+                <th style="text-align: right;">Amount</th>
+                <th style="text-align: right;">Tip</th>
+                <th style="text-align: right;">Gratuity</th>
+                <th style="text-align: right;">Total</th>
+                <th style="text-align: right;">Refund</th>
+                <th style="text-align: right;">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    CREDIT: Visa 6871
+                </td>
+                <td>5/11/22, 11:46 AM</td>
+                <td style="text-align: right;">$47.26</td>
+                <td style="text-align: right;">$0.00</td>
+                <td style="text-align: right;">$0.00</td>
+                <td style="text-align: right;">$47.26</td>
+                <td style="text-align: right;">$0.00</td>
+                <td style="text-align: right;">CAPTURED</td>
+            </tr>
+        </tbody>
+    </table>
+
+
+</div>
+<div class="page-break"></div>
+<div class="print-only" style="text-align:right;padding:5px;">Order 3 of 43</div>
+
+<!-- Footer Junk -->
+<div class="pull-right print-hide">
+    <span class="pagination-summary">Showing 1 through 20 of 43</span>
+
+    <span>
+        <div class="pagination">
+            <ul>
+                <li class="prev disabled"><a href="#">�&nbsp;Previous</a></li>
+                <li class="active"><a href="/restaurants/admin/reports/orderdetailspage?page=1">1</a></li>
+                <li class=""><a href="/restaurants/admin/reports/orderdetailspage?page=2">2</a></li>
+                <li class=""><a href="/restaurants/admin/reports/orderdetailspage?page=3">3</a></li>
+                <li class="next "><a href="/restaurants/admin/reports/orderdetailspage?page=2">Next&nbsp;�</a></li>
+            </ul>
+        </div>
+    </span>
+</div>

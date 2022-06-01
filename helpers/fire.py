@@ -17,6 +17,7 @@ import time
 import datetime
 from dotenv import load_dotenv
 import pytz
+import helpers.data as data
 
 #get .env file from current directory
 cwd = os.getcwd()
@@ -60,8 +61,6 @@ def read_orders_from_firestore(start = '01/01/1900',end = '12/31/2100'):
     # docs = doc_ref.stream()
 
     temp_dict = {}
-
-    # TODO write a function to compare the "orders" screen to the "order details" screen. That will help if the display error happens on the order details screen.
 
     for doc in docs:
         temp_dict[doc.id] = doc.to_dict()
@@ -147,8 +146,7 @@ def add_orders_from_dict(orders_dict):
     dates = {'min':datetime.datetime(2100,1,1,0,0,0,0,timezone),'max':datetime.datetime(1900,1,1,0,0,0,0,timezone)}
     
 
-    # TODO handle nan values prior to this steps
-    # print('received dict: ', orders_dict)
+    # TODO handle nan values prior to this step
     for i in orders_dict.values(): 
         #rework the structure of the dict. Order_id = key, else = value
         i['date'] = datetime.datetime.strptime(i['date'], '%m/%d/%Y')
@@ -253,6 +251,9 @@ def get_categories():
 
     for cat in cats:
         temp.append(cat.to_dict())
+
+    temp = data.convert_list_to_df(temp)
+    temp.to_csv('E:/Original/ToastScraper/PowerBI Data/categories.csv')
 
     return temp 
 

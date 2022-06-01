@@ -26,6 +26,9 @@ def extract_orders_from_order_details(order_details_pages):
     """
     logger.debug('extract_orders_from_order_details')
     
+    # TODO add scraped_categories parameter, compare item counts from the soup to the scraped_category counts (to make sure nothing was missed or double-counted)
+    # Ex: the top of the toast page says the orders had 68 long johns, we should find a total of 68 long johns in the soup
+
     # this will be used to store item objects until they are converted to a DF and returned 
     order_list = []
 
@@ -63,6 +66,7 @@ def extract_orders_from_order_details(order_details_pages):
             ## Gather the item details from the item table
             order_table = container.find('table', id='order-details-item-table')
 
+            # TODO move this validation to another function
             ## Validate that the columns haven't changed in the order-details table
             expected_columns = ['Menu Item', 'Modifiers', 'Price', 'Qty', 'Discount', 'Net', 'Tax', 'Total', 'Voided?', 'Reason', 'Refund Qty', 'Refund']
             actual_columns = []
@@ -79,7 +83,7 @@ def extract_orders_from_order_details(order_details_pages):
             # each row of the table holds an item and its details
             rows = order_table.find_all('tr')
             if rows[1].has_attr('id'):
-                order_list.append(handle_special_rows(row))
+                order_list.append(handle_special_rows(rows))
             else:
                 for row in rows[1:]:                              
                     logger.debug(f'order id: {order_id}')
@@ -115,7 +119,7 @@ def extract_orders_from_order_details(order_details_pages):
 
     return convert_list_to_df(order_list)
 
-def handle_special_rows(row):
+def handle_special_rows(rows):
     """
         Extract data from non-standard order tables
             Gift cards have extra rows in-between the expected ones
@@ -143,7 +147,6 @@ def handle_special_rows(row):
     # item_name = row_values[0].string.strip()
     # cookie_mods = row_values[1].string
     # unit_price = row_values[2].string.strip()
-    # # FIXME numbers over 1000 have a comma in the string: ex: 4,500
     # cookie_qty = int(row_values[3].string.strip())
     # discount = row_values[4].string.strip()
     # net_price = row_values[5].string.strip()

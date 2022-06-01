@@ -23,3 +23,4 @@ def test_extract_orders_from_order_details(soup_list):
     assert df.size == 51
     assert len(df.columns) == len(expected) 
     assert all([a == b for a,b in zip(df.columns,expected)])
+    assert df[df['order_id']== '500000017401140395']['qty'] == 2000 #test for commas in strings

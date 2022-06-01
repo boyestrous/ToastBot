@@ -21,7 +21,6 @@ def main():
     
     ## validate the tables and data sets are still as expected
     # TODO write validation checks
-        # read table head rows to make sure they haven't changed
         # check types of td fields
 
     ## get categories from Toast, in case Firebase doesn't have a match later (see add_categories_to_items)

@@ -11,6 +11,7 @@ logger = logging.getLogger('data')
 
 # Imports specific to this set of functions
 import pandas as pd
+import os
 
 def convert_list_to_df(object_list: list) -> pd.DataFrame:
     """
@@ -42,7 +43,9 @@ def add_categories_to_items(items_df:pd.DataFrame, scraped_categories_df:pd.Data
     logger.debug('add_categories_to_items')
 
     ## Get category-item pairs from firebase
-    cats = pd.DataFrame(fire.get_categories())
+    cats = fire.get_categories()
+    # ensure the order of columns stays consistent
+    cats = cats[['item_name','category']]
     cats['item_name'].drop_duplicates(inplace=True)
    
     # Merge the dfs, keeping the category from firebase and the item details from the scraper
@@ -57,9 +60,11 @@ def add_categories_to_items(items_df:pd.DataFrame, scraped_categories_df:pd.Data
     missing_cats = df[df['category'].isna()]
     df.dropna(subset=['category'], inplace=True)
     logger.debug(f'missing cats size: {missing_cats.size}')
+    missing_cats.dropna(subset=['item_name','order_id'],inplace=True)
     if (len(missing_cats.index) > 0):
         alerts.send_sms_alert('missing categories need to be reviewed')
-        missing_cats.to_csv('missing_cats.csv', mode='a')
+        filename = 'missing_cats.csv'
+        missing_cats.to_csv('missing_cats.csv', mode='a', header=(not os.path.exists(filename)))
         # apply the category that was scraped
         df2 = scraped_categories_df.merge(missing_cats, left_on='item_name', right_on="item_name", how='right')
         df2.drop(columns=['category_y'], inplace=True)

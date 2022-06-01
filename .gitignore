@@ -10,3 +10,6 @@ __pycache__
 data_for_powerBI.csv
 fixed_cats.csv
 missing_cats.csv
+data_for_powerBI2.csv
+toastbot.log
+all_to_csv.py

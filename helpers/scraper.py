@@ -240,7 +240,6 @@ def scan_page(driver):
     ## Find the order_details section and count the pages that contain order details
     order_page_selector = wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME,'pagination')))
     pages = order_page_selector[1].find_elements(By.TAG_NAME, 'li')
-    # FIXME Toast no longer displays the last page. If there are more than 5, it will only scan the first 5
     page_count = pages[len(pages)-2].text
     logger.debug('page count: %s', page_count)
 
@@ -280,7 +279,7 @@ def scan_page(driver):
             parent_class = driver.find_element(By.XPATH,"//div[@class='pagination'][1]/ul/li[last()]")
     
     # Save a copy of the most recent html structure for testing
-    with open('helpers/tests/latest_order_details.html','w') as file:
+    with open('helpers/tests/latest_order_details.html','w', encoding="utf-8") as file:
         logger.debug('order_html saved to file')
         file.write(order_details_html[0])
 

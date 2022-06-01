@@ -26,20 +26,21 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-def start_webdriver():
+def start_webdriver(headless: bool = False):
     """
         Launch a Chrome Window and return a driver object for future parsing and window manipulation
     """
     logger.debug('start_webdriver')
-    # TODO allow 'headless' parameter
+
     ### chrome_options is really only necessary if you plan to enable additional features. It defaults to None. 
-    ### it's setup here for easy un-commenting of the headless options
     chrome_options = webdriver.ChromeOptions()
-    # ## Enable these options for headless server configuration (Heroku)
-    # chrome_options.add_argument('--disable-gpu')
-    # chrome_options.add_argument('--headless')
-    # chrome_options.add_argument('--no-sandbox')
-    # chrome_options.add_argument('--disable-dev-shm-usage')
+    
+    #Headless server configuration (Heroku)
+    if headless:
+        chrome_options.add_argument('--disable-gpu')
+        chrome_options.add_argument('--headless')
+        chrome_options.add_argument('--no-sandbox')
+        chrome_options.add_argument('--disable-dev-shm-usage')
 
     service = Service(executable_path=ChromeDriverManager().install())
     driver = webdriver.Chrome(service=service,options=chrome_options)

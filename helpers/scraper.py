@@ -228,7 +228,8 @@ def save_orders_html(driver) -> str:
 
 def scan_page(driver):
     """
-        Read through the order_details and determine how many pages
+        Read through the order_details and determine how many pages. 
+        Then iterate through each page and grab the html of the order details section
     """
     logger.debug('scan_page')
 
@@ -316,7 +317,8 @@ def get_categories_from_toast(driver):
         tds = row.find_elements(By.TAG_NAME,'td')
         item = tds[0].text
         category = tds[1].text
-        categories.append({'item_name': item, 'category': category})
+        qty = int(tds[3].text.replace(',',''))
+        categories.append({'item_name': item, 'category': category, 'qty': qty})
     return data.convert_list_to_df(categories) 
 
 def validate_order_details_columns():

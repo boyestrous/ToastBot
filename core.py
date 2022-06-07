@@ -19,10 +19,6 @@ def main():
     # remove problematic elements from the page before scraping anything
     scraper.clean_page(driver)
     
-    ## validate the tables and data sets are still as expected
-    # TODO write validation checks
-        # check types of td fields
-
     ## get categories from Toast, in case Firebase doesn't have a match later (see add_categories_to_items)
     toast_category_df = scraper.get_categories_from_toast(driver)
 
@@ -36,15 +32,19 @@ def main():
 
     ## Add helper columns
     # Flags - used to identify actions that must be taken to resolve conflicts or issues (ex: missing category)
-    df_with_helpers = data.add_helper_columns(df)
+    df = data.add_helper_columns(df)
 
+    # TODO add known weird orders handler (States Attorney, etc.)
     # Add categories column to allow splitting items into different groups for manipulation
-    df_with_categories = data.add_categories_to_items(df_with_helpers,toast_category_df)
-
+    df = data.add_categories_to_items(df,toast_category_df)
+    df = data.expand_customer_info(df)
+    df = data.manipulate_df_strings(df)
+    df = data.expand_datetime(df)
     
-    ## Toast setup handles the mods differently for donuts and everything else, need to work with those categories separately before re-merging at upload time
-    # remove donut category & items from the df (mods are different)
-    donut_df = df_with_categories.copy()
+    ## Handle the modifiers for each category
+    df = data.handle_donut_rows(df)
+    
+    
     # extract order details and item modifiers for non-donuts
         # check for cinnamon rolls with buttercream frosting
     # prep dfs for upload
@@ -64,7 +64,7 @@ def main():
         
 
     # manipulate item data into correct format
-   
+
 
 if __name__ == '__main__':
     import logging

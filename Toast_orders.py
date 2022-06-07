@@ -308,51 +308,52 @@ def extract_details_from_mods(df):
     wrapping_extract['wrapping'] = df['mods'].str.extract(wrap_regex, re.IGNORECASE)
     df = pd.concat([df, wrapping_extract['wrapping']], axis=1)
 
-    #create new DF for manipulation
-    cust_ext = pd.DataFrame()
-    cust_ext['customer'] = df['customer']
-    #the next 4 rows: set regex for extract, compile regex for replacement, extract, remove
-    #order type
-    type_regex = "(?P<order_type>.{1,20})\:"
-    ctype_regex = re.compile(r"(?P<order_type>.{1,20})\:",flags=re.IGNORECASE)
-    cust_ext['order_type'] = cust_ext['customer'].str.extract(type_regex, re.IGNORECASE)
-    df['customer'] = df['customer'].str.replace(ctype_regex,'')
-    #phone
-    phone_regex = "(?P<phone>\d{3}\-\d{3}\-\d{4})"
-    cphone_regex = re.compile(r"(?P<phone>\d{3}\-\d{3}\-\d{4})",flags=re.IGNORECASE)
-    cust_ext['phone'] = cust_ext['customer'].str.extract(phone_regex, re.IGNORECASE)
-    df['customer'] = df['customer'].str.replace(cphone_regex,'')
-    #email
-    email_regex = "(?P<email>\S{1,25}@\S{1,25})"
-    cemail_regex = re.compile(r"(?P<email>\S{1,25}@\S{1,25})",flags=re.IGNORECASE)
-    cust_ext['email'] = cust_ext['customer'].str.extract(email_regex, re.IGNORECASE)
-    df['customer'] = df['customer'].str.replace(cemail_regex,'')
+    ## Customers moved data.py 6/2/2022
+    # #create new DF for manipulation
+    # cust_ext = pd.DataFrame()
+    # cust_ext['customer'] = df['customer']
+    # #the next 4 rows: set regex for extract, compile regex for replacement, extract, remove
+    # #order type
+    # type_regex = "(?P<order_type>.{1,20})\:"
+    # ctype_regex = re.compile(r"(?P<order_type>.{1,20})\:",flags=re.IGNORECASE)
+    # cust_ext['order_type'] = cust_ext['customer'].str.extract(type_regex, re.IGNORECASE)
+    # df['customer'] = df['customer'].str.replace(ctype_regex,'')
+    # #phone
+    # phone_regex = "(?P<phone>\d{3}\-\d{3}\-\d{4})"
+    # cphone_regex = re.compile(r"(?P<phone>\d{3}\-\d{3}\-\d{4})",flags=re.IGNORECASE)
+    # cust_ext['phone'] = cust_ext['customer'].str.extract(phone_regex, re.IGNORECASE)
+    # df['customer'] = df['customer'].str.replace(cphone_regex,'')
+    # #email
+    # email_regex = "(?P<email>\S{1,25}@\S{1,25})"
+    # cemail_regex = re.compile(r"(?P<email>\S{1,25}@\S{1,25})",flags=re.IGNORECASE)
+    # cust_ext['email'] = cust_ext['customer'].str.extract(email_regex, re.IGNORECASE)
+    # df['customer'] = df['customer'].str.replace(cemail_regex,'')
 
-    #remove \n from text strings
-    cslash = re.compile(r"\n", flags=re.IGNORECASE)
-    df['customer'] = df['customer'].str.replace(cslash,'')
-    df['customer'] = df['customer'].str.strip()
+    # #remove \n from text strings
+    # cslash = re.compile(r"\n", flags=re.IGNORECASE)
+    # df['customer'] = df['customer'].str.replace(cslash,'')
+    # df['customer'] = df['customer'].str.strip()
 
-    #name
-    cname_regex = re.compile(r"(?P<name>.{1,100})\b\s{1,50}\(detail\)",flags=re.IGNORECASE)
-    cust_ext['name'] = df['customer'].str.extract(cname_regex)
-    df['customer'] = df['customer'].str.replace(cname_regex,'')
-    df['customer'] = df['customer'].str.strip()
+    # #name
+    # cname_regex = re.compile(r"(?P<name>.{1,100})\b\s{1,50}\(detail\)",flags=re.IGNORECASE)
+    # cust_ext['name'] = df['customer'].str.extract(cname_regex)
+    # df['customer'] = df['customer'].str.replace(cname_regex,'')
+    # df['customer'] = df['customer'].str.strip()
 
-    #delivery
-    df['delivery instructions'] = df['customer']
-    del_regex = '(?P<address>.{1,100}61\d{3})\s{1,100}(?P<delivery_instructions>\S.{1,100})'
-    del_ext = pd.DataFrame(df['delivery instructions'])
-    del_ext = del_ext['delivery instructions'].str.extract(del_regex)
-    df = pd.concat([df, del_ext], axis=1)
-    df = df.drop(['delivery instructions'],axis=1)
-    # print('cols after del steps: ',df.columns)
+    # #delivery
+    # df['delivery instructions'] = df['customer']
+    # del_regex = '(?P<address>.{1,100}61\d{3})\s{1,100}(?P<delivery_instructions>\S.{1,100})'
+    # del_ext = pd.DataFrame(df['delivery instructions'])
+    # del_ext = del_ext['delivery instructions'].str.extract(del_regex)
+    # df = pd.concat([df, del_ext], axis=1)
+    # df = df.drop(['delivery instructions'],axis=1)
+    # # print('cols after del steps: ',df.columns)
 
-    #drop unnecessary fields
-    cust_ext = cust_ext[['order_type','phone','email','name']]
-    #merge dataframes
-    df = pd.concat([df, cust_ext], axis=1)
-    df = df.drop(['customer'],axis=1)
+    # #drop unnecessary fields
+    # cust_ext = cust_ext[['order_type','phone','email','name']]
+    # #merge dataframes
+    # df = pd.concat([df, cust_ext], axis=1)
+    # df = df.drop(['customer'],axis=1)
 
     #pull BG color from mods
     bg_regex = '([^,]{1,15})\sbackground'
@@ -375,12 +376,13 @@ def extract_details_from_mods(df):
     sprink_color_ext = df['mods'].str.extract(sprink_regex, re.IGNORECASE)
     df = pd.concat([df, sprink_color_ext['sprinkles']], axis=1)
 
-    #pull due date/time
-    due_regex = '(?P<date>\d{1,2}\/\d{1,2}\/\d{4}).+(?P<time>\d{1,2}:\d\d AM|\d{1,2}:\d\d PM)'
-    due_ext = pd.DataFrame(df['due'])
-    due_ext = df['due'].str.extract(due_regex, re.IGNORECASE)
-    df = pd.concat([df, due_ext[['date', 'time']]], axis=1)
-    print(df.head())
+    # MOVED TO Data.py 6/2/2022
+    # #pull due date/time
+    # due_regex = '(?P<date>\d{1,2}\/\d{1,2}\/\d{4}).+(?P<time>\d{1,2}:\d\d AM|\d{1,2}:\d\d PM)'
+    # due_ext = pd.DataFrame(df['due'])
+    # due_ext = df['due'].str.extract(due_regex, re.IGNORECASE)
+    # df = pd.concat([df, due_ext[['date', 'time']]], axis=1)
+    # print(df.head())
 
     #strip out previously extracted content and extras
     cwrap_regex = re.compile(r"([^,]{1,15}wrap[^,\b]{1,25})", flags=re.IGNORECASE)
@@ -405,8 +407,8 @@ def extract_details_from_mods(df):
 
 
     # strip 'ID: ' from the front of the order ID
-    # df.loc[:,('order_id')] = df.loc[:,('order_id')].str.extract(r'([0-9]{1,19})',re.IGNORECASE)
-    df['order_id'] =  [re.sub(r'([0-9]{1,19})','', str(x)) for x in df['order_id']]
+    # # df.loc[:,('order_id')] = df.loc[:,('order_id')].str.extract(r'([0-9]{1,19})',re.IGNORECASE)
+    # df['order_id'] =  [re.sub(r'([0-9]{1,19})','', str(x)) for x in df['order_id']]
 
     df.rename(columns={"mods": "mods_archive"},inplace=True)
     df = df.drop(['due'],axis=1)
@@ -541,37 +543,38 @@ def get_cookie_orders(sdate, edate, out_type='df'):
 #     else:
 #         return {'status': 'working'}
 
-def unassort(donut_df):
-    """
-    Turns a count of assorted dozen donuts into a list of the individual donuts, returns DF that can be merged back into the donut_df
-    """
-    # print(donut_df)
-    dozens = donut_df.loc[donut_df['item_name']=='Assorted Dozen Donuts'].sum()['qty']
-    dozens = int(dozens)
+# MOVED TO data.py 6/6/2022
+# def unassort(donut_df):
+#     """
+#     Turns a count of assorted dozen donuts into a list of the individual donuts, returns DF that can be merged back into the donut_df
+#     """
+#     # print(donut_df)
+#     dozens = donut_df.loc[donut_df['item_name']=='Assorted Dozen Donuts'].sum()['qty']
+#     dozens = int(dozens)
 
-    unassorted_donuts = pd.DataFrame(columns=['item_name', 'mods','qty'])
+#     unassorted_donuts = pd.DataFrame(columns=['item_name', 'mods','qty'])
 
-    if dozens > 0:
-        print('asst doz qty: ', dozens)
-        donut_df = donut_df[donut_df['item_name'] != 'Assorted Dozen Donuts']
-        # print(donut_df)
+#     if dozens > 0:
+#         print('asst doz qty: ', dozens)
+#         donut_df = donut_df[donut_df['item_name'] != 'Assorted Dozen Donuts']
+#         # print(donut_df)
 
-        #append a row for each donut type to a new dataframe
-        unassorted_donuts = unassorted_donuts.append({'item_name' : 'Long John', 'mods':'Chocolate', 'qty': dozens}, ignore_index=True)
-        unassorted_donuts = unassorted_donuts.append({'item_name' : 'Long John', 'mods':'Vanilla', 'qty': dozens}, ignore_index=True)
-        unassorted_donuts = unassorted_donuts.append({'item_name' : 'Long John', 'mods':'Maple', 'qty': dozens}, ignore_index=True)
-        unassorted_donuts = unassorted_donuts.append({'item_name' : 'Ring Donut', 'mods':'Glaze', 'qty': dozens}, ignore_index=True)
-        unassorted_donuts = unassorted_donuts.append({'item_name' : 'Cake Donut', 'mods':'Chocolate', 'qty': dozens}, ignore_index=True)
-        unassorted_donuts = unassorted_donuts.append({'item_name' : 'Cake Donut', 'mods':'Maple', 'qty': dozens}, ignore_index=True)
-        unassorted_donuts = unassorted_donuts.append({'item_name' : 'Twist Donut', 'mods':'Vanilla', 'qty': dozens}, ignore_index=True)
-        unassorted_donuts = unassorted_donuts.append({'item_name' : 'Twist Donut', 'mods':'Cinnamon Glaze', 'qty': dozens}, ignore_index=True)
-        unassorted_donuts = unassorted_donuts.append({'item_name' : 'Fried Roll', 'mods':'Glaze', 'qty': dozens}, ignore_index=True)
-        unassorted_donuts = unassorted_donuts.append({'item_name' : 'Apple Fritter', 'mods':'', 'qty': dozens}, ignore_index=True)
-        unassorted_donuts = unassorted_donuts.append({'item_name' : 'Bismark (filled donut)', 'mods':'Bavarian', 'qty': dozens}, ignore_index=True)
-        unassorted_donuts = unassorted_donuts.append({'item_name' : 'Bismark (filled donut)', 'mods':'Rasp with White Icing', 'qty': dozens}, ignore_index=True)
-        print('unassorted: ',unassorted_donuts)
-        unassorted_donuts.rename(columns={"mods": "other_requests"},inplace=True)
-    return donut_df.append(unassorted_donuts)
+#         #append a row for each donut type to a new dataframe
+#         unassorted_donuts = unassorted_donuts.append({'item_name' : 'Long John', 'mods':'Chocolate', 'qty': dozens}, ignore_index=True)
+#         unassorted_donuts = unassorted_donuts.append({'item_name' : 'Long John', 'mods':'Vanilla', 'qty': dozens}, ignore_index=True)
+#         unassorted_donuts = unassorted_donuts.append({'item_name' : 'Long John', 'mods':'Maple', 'qty': dozens}, ignore_index=True)
+#         unassorted_donuts = unassorted_donuts.append({'item_name' : 'Ring Donut', 'mods':'Glaze', 'qty': dozens}, ignore_index=True)
+#         unassorted_donuts = unassorted_donuts.append({'item_name' : 'Cake Donut', 'mods':'Chocolate', 'qty': dozens}, ignore_index=True)
+#         unassorted_donuts = unassorted_donuts.append({'item_name' : 'Cake Donut', 'mods':'Maple', 'qty': dozens}, ignore_index=True)
+#         unassorted_donuts = unassorted_donuts.append({'item_name' : 'Twist Donut', 'mods':'Vanilla', 'qty': dozens}, ignore_index=True)
+#         unassorted_donuts = unassorted_donuts.append({'item_name' : 'Twist Donut', 'mods':'Cinnamon Glaze', 'qty': dozens}, ignore_index=True)
+#         unassorted_donuts = unassorted_donuts.append({'item_name' : 'Fried Roll', 'mods':'Glaze', 'qty': dozens}, ignore_index=True)
+#         unassorted_donuts = unassorted_donuts.append({'item_name' : 'Apple Fritter', 'mods':'', 'qty': dozens}, ignore_index=True)
+#         unassorted_donuts = unassorted_donuts.append({'item_name' : 'Bismark (filled donut)', 'mods':'Bavarian', 'qty': dozens}, ignore_index=True)
+#         unassorted_donuts = unassorted_donuts.append({'item_name' : 'Bismark (filled donut)', 'mods':'Rasp with White Icing', 'qty': dozens}, ignore_index=True)
+#         print('unassorted: ',unassorted_donuts)
+#         unassorted_donuts.rename(columns={"mods": "other_requests"},inplace=True)
+#     return donut_df.append(unassorted_donuts)
 
 def identify_fallen_orders(local_ids, dates):
     """

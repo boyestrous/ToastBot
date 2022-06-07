@@ -11,6 +11,7 @@ def main():
     """
     logger.debug('all_to_CSV _main_')
 
+    # TODO convert this into parameters that can run on the core.py. No need to have a separate file for this...
     df = pd.DataFrame()
     driver = scraper.start_webdriver()
 
@@ -27,10 +28,6 @@ def main():
 
         # remove problematic elements from the page before scraping anything
         scraper.clean_page(driver)
-        
-        ## validate the tables and data sets are still as expected
-        # TODO write validation checks
-            # check types of td fields
 
         ## get categories from Toast, in case Firebase doesn't have a match later (see add_categories_to_items)
         toast_category_df = scraper.get_categories_from_toast(driver)

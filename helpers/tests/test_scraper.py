@@ -1,7 +1,5 @@
 import datetime
-from unittest import mock
 import pytest
-import pytest_mock
 from selenium import webdriver
 import selenium
 from webdriver_manager.chrome import ChromeDriverManager
@@ -93,6 +91,7 @@ def test_alternate_datestring_set_custom_dates(driver):
     assert returned_driver.find_element(By.NAME, 'reportDateStart').get_attribute('value') == '05-01-2022'
     assert returned_driver.find_element(By.NAME, 'reportDateEnd').get_attribute('value') == '05-03-2022'
 
+@pytest.mark.single
 def test_get_categories_from_toast(driver):
     """
         Should return a dataframe with two columns: Item, Category
@@ -102,8 +101,9 @@ def test_get_categories_from_toast(driver):
     returned_driver = set_custom_dates(driver, startDate, endDate)
 
     return_df = get_categories_from_toast(returned_driver)
-    assert return_df.columns[0] == 'item'
+    assert return_df.columns[0] == 'item_name'
     assert return_df.columns[1] == 'category'
+    assert return_df.columns[2] == 'qty'
     assert return_df.size > 1
 
 def test_scan_page(driver):

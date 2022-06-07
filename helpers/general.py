@@ -14,20 +14,26 @@ def format_date_for_toast(date):
         Takes a string or datetime object and returns in the format needed for copying into toast mm-dd-yyyy
     """
     logger.debug('format_date_for_toast')
-    # Allow strings in mm-dd-yyyy or mm/dd/yyyy format for easy CLI testing
-    if type(date) == str:
-        # replace / with -, for dates formatted mm/dd/yyyy
-        date = re.sub('/','-',date)
 
-        # before returning, make sure it strictly fits the expected string format
-        proper_string = re.search(r"\d{2}\-\d{2}\-\d{4}", date)
-        # re.search will return None if it doesn't find the expected pattern
-        if not proper_string:
-            raise Exception('string is not proper date format. Use mm-dd-yyyy')
+    # Allow strings in several formats (I've found all of these in the website in the past)
+    if type(date) == str:
+        converted_date = ''
+        for fmt in ('%m/%d/%Y','%m/%d/%y','%m-%d-%Y','%m-%d-%y'):
+            # stop after successful conversion
+            if converted_date == '':
+                try:
+                    converted_date = datetime.datetime.strptime(date, fmt)
+                except ValueError:
+                    pass
+        # If it hasn't converted after the for loop, it failed
+        if converted_date == '':
+            raise ValueError("string does not match a valid date format, use mm-dd-yy or mm-dd-yyyy")
         
-        final_string = date
+        final_string = converted_date.strftime('%m-%d-%Y')
     elif type(date) == datetime.datetime:
         final_string = date.strftime('%m-%d-%Y')
+    else:
+        raise Exception(f'invalid data type{type(date)}, datetime or string required')
 
 
     return final_string

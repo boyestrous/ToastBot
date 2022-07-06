@@ -73,8 +73,8 @@ def add_categories_to_items(items_df:pd.DataFrame, scraped_categories_df:pd.Data
 
         # use the categories that were scraped from the toast website as a placeholder
         df2 = scraped_categories_df.merge(missing_cats, left_on='item_name', right_on="item_name", how='right')
-        df2.drop(columns=['category_y'], inplace=True)
-        df2.rename(columns={'category_x':'category'}, inplace=True)
+        df2.drop(columns=['category_y', 'qty_x'], inplace=True)
+        df2.rename(columns={'category_x':'category', 'qty_y': 'qty'}, inplace=True)
         df=pd.concat([df,df2])
 
     return df
@@ -250,6 +250,8 @@ def unassort_donuts(donut_df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
-def handle_cookie_mods(cookie_df):
-    
-    return cookie_df
+def handle_mods_except_donuts(df: pd.DataFrame):
+    """
+        
+    """
+    return df

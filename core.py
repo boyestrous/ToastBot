@@ -44,8 +44,8 @@ def main():
     ## Handle the modifiers for each category
     df = data.handle_donut_rows(df)
     
-    
     # extract order details and item modifiers for non-donuts
+    df = data.handle_mods_except_donuts(df)
         # check for cinnamon rolls with buttercream frosting
     # prep dfs for upload
         # merge donut items and orders with other items and orders

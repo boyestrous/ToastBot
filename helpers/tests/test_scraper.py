@@ -117,4 +117,3 @@ def test_scan_page(driver):
 
     assert len(pages_html) == 5
     assert type(pages_html[0]) == str
-

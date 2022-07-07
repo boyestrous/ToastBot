@@ -250,8 +250,61 @@ def unassort_donuts(donut_df: pd.DataFrame) -> pd.DataFrame:
 
     return df
 
-def handle_mods_except_donuts(df: pd.DataFrame):
+def handle_cookie_rows(df: pd.DataFrame) -> pd.DataFrame:
     """
-        
+        Manipulates the cookie rows and returns the df with expanded rows and columns.
+            -wrapping sytle (individual or heat-sealed)
+            -background color
+            -writing color
+            -everything else
     """
-    return df
+    cookie_categories = ['Round', 'Shapes','Custom','Open Cake', 'Frequent Shapes','Spring Holiday Shapes','Numbers','Sports','Summer Holiday Shapes','Winter Holiday Shapes','Fall Holiday Shapes']
+
+    cookie_df = df.copy()[df['category'].isin(cookie_categories)]
+    other_items_df = df.copy()[~df['category'].isin(cookie_categories)]
+
+    # get wrapping instructions
+    wrap_regex = "([^,]{1,15}wrap[^,\b]{1,25})"
+    wrapping_extract = pd.DataFrame(cookie_df['mods'])
+    wrapping_extract['wrapping'] = cookie_df['mods'].str.extract(wrap_regex, re.IGNORECASE)
+    cookie_df = pd.concat([cookie_df, wrapping_extract['wrapping']], axis=1)
+
+    # get background color for cookies
+    bg_regex = '([^,]{1,15})\sbackground'
+    bg_color_ext = pd.DataFrame(cookie_df['mods'])
+    bg_color_ext['bg_color'] = cookie_df['mods'].str.extract(bg_regex, re.IGNORECASE)
+    bg_color_ext = bg_color_ext[['bg_color']]
+    cookie_df = pd.concat([cookie_df, bg_color_ext], axis=1)
+
+    # get sprinkles
+    sprink_regex = '(?P<sprinkles>([^,]{1,25}\s)?sprinkles)'
+    sprink_color_ext = pd.DataFrame(cookie_df['mods'])
+    sprink_color_ext = cookie_df['mods'].str.extract(sprink_regex, re.IGNORECASE)
+    cookie_df = pd.concat([cookie_df, sprink_color_ext['sprinkles']], axis=1)
+
+    #strip out previously extracted content and extras
+    cwrap_regex = re.compile(r"([^,]{1,15}wrap[^,\b]{1,25})", flags=re.IGNORECASE)
+    cbg_regex = re.compile(r"([^,]{1,15})\sbackground", flags=re.IGNORECASE)
+    csprink_regex = re.compile(r"(?P<sprinkles>([^,]{1,25}\s)?sprinkles)", flags=re.IGNORECASE)
+    cchar_regex = re.compile(r"(\d{1,3}-\d{1,3} Characters)", flags=re.IGNORECASE)
+    cnodraw_regex = re.compile(r"(no drawings)", flags=re.IGNORECASE)
+    ccomma_regex = re.compile(r"(\s?,\s?)", flags=re.IGNORECASE)
+    # Retain original 'mods' column, create new column and strip out previously extracted fields
+    cookie_df['other_requests'] = cookie_df['mods']
+    cookie_df.rename(columns={"mods": "mods_archive"},inplace=True)
+    cookie_df['other_requests'] = cookie_df['other_requests'].str.replace(cwrap_regex,'')
+    cookie_df['other_requests'] = cookie_df['other_requests'].str.replace(cbg_regex,'')
+    # cookie_df['other_requests'] = cookie_df['other_requests'].str.replace(cwriting_regex,'')
+    cookie_df['other_requests'] = cookie_df['other_requests'].str.replace(csprink_regex,'')
+    cookie_df['other_requests'] = cookie_df['other_requests'].str.replace(cchar_regex,'')
+    cookie_df['other_requests'] = cookie_df['other_requests'].str.replace(cnodraw_regex,'')
+    cookie_df['other_requests'] = cookie_df['other_requests'].str.replace(ccomma_regex,'')
+    cookie_df['item_name'] = cookie_df['item_name'].str.replace("Round Iced Sugar Cookies",'Round Iced')
+    cookie_df['item_name'] = cookie_df['item_name'].str.replace("Round Custom Cookie",'Round Iced')
+    cookie_df['item_name'] = cookie_df['item_name'].str.replace("Custom Round",'Round Iced')
+    cookie_df['item_name'] = cookie_df['item_name'].str.replace("Round Iced Cookie",'Round Iced')
+
+    # merge cookies with everything else before returning
+    return_df = pd.concat([cookie_df,other_items_df])
+
+    return return_df

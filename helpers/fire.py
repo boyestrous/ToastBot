@@ -14,9 +14,10 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 import os.path
 import time
+import pytz
 import datetime
 from dotenv import load_dotenv
-import pytz
+import pandas as pd
 import helpers.data as data
 
 #get .env file from current directory
@@ -174,33 +175,6 @@ def add_orders_from_dict(orders_dict):
     
     return 'Yes'
 
-def gen_item_key(d):
-    '''
-    Generates a unique key for an item to prevent duplicates when uploading
-    '''
-    # last 4 digits of the order_id
-    le = len(d['order_id'])
-    a = d['order_id'][le-8:le]
-
-    # item key iterator
-    b = d['item_key']
-
-    # first 3 letters of category
-    c = d['category'][:3]
-
-    if any(substring in d['item_name'] for substring in ['/','*']):
-        item = d['item_name'].replace('/','Z')
-        item = item.replace('*','Z')
-        e = item[:3]
-    else: 
-        e = d['item_name'][:3]
-
-    f = d['qty']
-    
-    item_key = a + '-' + str(b) + '-' + c + e + str(f)
-    
-    return item_key
-
 def add_exception(e):
     '''
     takes a dict containing exception info 
@@ -209,8 +183,6 @@ def add_exception(e):
 
 def add_items_from_dict(items_dict):
     for i in items_dict.values(): 
-        item_key = gen_item_key(i)
-        # print(i.get('order_id'))
         data = {
             'order_id' : i.get('order_id'),
             'order_friendly_id'  : i.get('order_friendly_id'),
@@ -223,16 +195,19 @@ def add_items_from_dict(items_dict):
             'other_requests'  : i.get('other_requests'),
             'qty' : i.get('qty')
         }
-        # print(item_key)
-        db.collection(u'Items').document(item_key).set(data)
+        db.collection(u'Items').document().set(data)
 
-def set_categories(cats:list):
+def set_categories():
     """
-        Adds new categories in firebase
-        List of dicts format:
-            {item_name: string, category: string}
+        Reads from fixed_cats.csv and uploads to firebase
+        fixed_cats is created from copy/pasting item_name and categories rows from missing_cats.csv
+            which is generated during the scraping process.
+        After upload, all non-header rows can be deleted (they don't need to be uploaded again)
     """
     logger.debug('set_categories')
+    
+    cats = pd.read_csv('fixed_cats.csv')
+
     for cat in cats:
         data = {
             'item_name': cat['item_name'],
